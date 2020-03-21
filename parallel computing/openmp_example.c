@@ -20,6 +20,7 @@ We aggregated tasks by assigning a contiguous block of trapezoids to each thread
 #include <stdlib.h>
 #include <omp.h>
 
+/* Thread function: */
 void Trap(double a, double b, int n, double* global_result_p);
 
 int main(int argc, char* argv[]) {
@@ -27,9 +28,16 @@ int main(int argc, char* argv[]) {
   double a, b; /*left and right endpoints*/
   int n; /*total number of trapezoids*/
   
+  /* Get number of threads from command line: */
   thread_count = strtol(argv[1], NULL, 10);
   printf("Enter a, b, and n\n");
   scanf("%lf %lf %d", &a, &b, &n);
+  # pragma omp parallel num_threads(thread_count)
+  /* Pragmas
+  Pragmas are special preprocessor instructions.
+  Typically added to a system to allow behaviors that are not part of the basic C specification.
+  Compilers that do not support the pragmas ignore them.
+  */
   Trap(a, b, n, &global_result);
   
   printf("With n = %d trapezoids, our estimate\n", n);
